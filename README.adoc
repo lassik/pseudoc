@@ -1,0 +1,32 @@
+= Pseudo-C
+
+Translates a custom Lisp syntax (S-expressions) to C. The syntax is
+designed to be a very light skin on top of C.
+
+We should really specify a standard Lisp-to-C syntax instead of each
+writing our own translators.
+
+The program is written in portable Common Lisp and is ready to run
+using CLISP. There is currently no documentation but the source is
+mostly written as fairly readable macros.
+
+Example:
+
+```
+(include-global "stdio.h")
+
+(fun main ((argc sint) (argv (pp char))) => (sint)
+  (var i sint)
+  (printf "Arguments are:\n")
+  (for (set! i 1) (< i argc) (inc! i)
+    (printf "Arg #%d: %s\n" i (vref argv i)))
+  (return 0))
+```
+
+To build it:
+
+```
+clisp pseudoc.lisp <hello.lisp >hello.c
+cc -o hello hello.c
+./hello
+```
